@@ -136,7 +136,7 @@ def remy_tree_generator(n):
 
 def gen_bst(n):
     """
-    Generate a pseudo random binary search tree's structure without label
+    Generate a pseudo random binary tree's structure without label
 
     Args:
         n: the size of tree to generate
