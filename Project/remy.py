@@ -103,4 +103,4 @@ class RemyTree:
         if self.tree[i].is_leaf():
             return ""
         else:
-            return "(" + self.compress(self.tree[i].left_child) + ")" + self.compress(self.tree[i].right_child)
+            return "(" + self.compress_aux(self.tree[i].left_child) + ")" + self.compress_aux(self.tree[i].right_child)
