@@ -126,7 +126,7 @@ def gen_all_trees(n):
 
 def test_covering(n):
     trees = gen_all_trees(n)
-    trees_compressed = list(map(lambda t: t.compress(), trees))
+    trees_compressed = list(map(RemyTree.compress, trees))
     count = defaultdict(int)
     for tc in trees_compressed:
         count[tc] += 1
@@ -134,11 +134,11 @@ def test_covering(n):
 
 
 def test_small_coverings():
-    return all([test_covering(i) for i in range(8)])
+    return all([test_covering(i) for i in range(9)])
 
 
 if __name__ == '__main__':
     if test_small_coverings():
-        print("the coverings of remy is uniform")
+        print("the coverings of remy are uniform")
     else:
-        print("the coverings of remy is not uniform")
+        print("the coverings of remy are not uniform")
