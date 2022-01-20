@@ -1,4 +1,6 @@
 import random
+import itertools
+from collections import defaultdict
 
 
 class Node:
@@ -22,6 +24,7 @@ class Node:
 
     def is_leaf(self):
         return self.left_child == -1 and self.right_child == -1
+
 
 class RemyTree:
     tree = None
@@ -91,16 +94,51 @@ class RemyTree:
             self.tree[i - 1].left_child = 2 * i
             self.tree[i - 1].num = i - 1
             self.tree[2 * i - 1].parent = self.tree[2 * i].parent = i - 1
-            self.tree[2 * i - 1].right_child = self.tree[2 * i - 1].left_child = -1
+            self.tree[2 * i - 1].right_child = self.tree[2 *
+                                                         i - 1].left_child = -1
             self.tree[2 * i].right_child = self.tree[2 * i].left_child = -1
 
         return self
 
     def compress(self):
         return self.compress_aux(0)
-        
+
     def compress_aux(self, i):
         if self.tree[i].is_leaf():
             return ""
         else:
             return "(" + self.compress_aux(self.tree[i].left_child) + ")" + self.compress_aux(self.tree[i].right_child)
+
+
+def gen_perms(n):
+    return list(map(list, list(itertools.permutations(range(1, n+1)))))
+
+
+def gen_all_trees(n):
+    perms = gen_perms(n)
+    trees = []
+    for perm in perms:
+        t = RemyTree(n)
+        t.growing_tree_det(n, perm)
+        trees.append(t)
+    return trees
+
+
+def test_covering(n):
+    trees = gen_all_trees(n)
+    trees_compressed = list(map(lambda t: t.compress(), trees))
+    count = defaultdict(int)
+    for tc in trees_compressed:
+        count[tc] += 1
+    return all(map(lambda x: x == count[0], count.values()))
+
+
+def test_small_coverings():
+    return all([test_covering(i) for i in range(8)])
+
+
+if __name__ == '__main__':
+    if test_small_coverings():
+        print("the coverings of remy is uniform")
+    else:
+        print("the coverings of remy is not uniform")
