@@ -1,6 +1,7 @@
 import random
 import itertools
 from collections import defaultdict
+import pydot
 
 
 class Node:
@@ -109,6 +110,35 @@ class RemyTree:
         else:
             return "(" + self.compress_aux(self.tree[i].left_child) + ")" + self.compress_aux(self.tree[i].right_child)
 
+    def load_graph(self, graph, index=0, name=None):
+        """
+        load graph for display the tree
+
+        Args:
+            graph: a graph of class Dot
+            name: a static increment value, to give meaningless unique name of each node
+
+        """
+        tree = self.tree[index]
+        if name is None:
+            name = [0]
+        node = pydot.Node(str(name[0]), label=tree.num, shape='circle')
+        if tree.left_child == -1 and tree.right_child == -1:
+            node.set('color', 'red')
+        graph.add_node(node)
+        if tree.left_child != -1:
+            name[0] += 1
+            node_left = pydot.Node(str(name[0]), label=self.tree[tree.left_child].num, shape='circle')
+            edge = pydot.Edge(node, node_left)
+            graph.add_edge(edge)
+            self.load_graph(graph, tree.left_child, name)
+        if tree.right_child != -1:
+            name[0] += 1
+            node_right = pydot.Node(str(name[0]), label=self.tree[tree.right_child].num, shape='circle')
+            edge = pydot.Edge(node, node_right)
+            graph.add_edge(edge)
+            self.load_graph(graph, tree.right_child, name)
+
 
 def gen_perms(n):
     return list(map(list, list(itertools.permutations(range(1, n+1)))))
@@ -130,11 +160,21 @@ def test_covering(n):
     count = defaultdict(int)
     for tc in trees_compressed:
         count[tc] += 1
-    return all(map(lambda x: x == count[0], count.values()))
+    return all(map(lambda x: x == count[trees_compressed[0]], count.values()))
 
 
 def test_small_coverings():
     return all([test_covering(i) for i in range(9)])
+
+
+def test_load_graph():
+    n = 6
+    t = RemyTree(n)
+    t.growing_tree(n)
+    graph = pydot.Dot(graph_type="digraph")
+    t.load_graph(graph)
+    name = "remy_tree_" + str(n) + ".png"
+    graph.write_png(name)
 
 
 if __name__ == '__main__':

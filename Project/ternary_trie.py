@@ -22,6 +22,14 @@ class Arbre:
         return g
 
     def get_mots(self, prefx):
+        """
+        à partir d'un préfixe, traverser tous les chemins de l'arbre puis composer les mot par le préfixe et les lettres
+        Args:
+            prefx: le préfixe de mots
+
+        Returns:
+            ensemble de mots préfixés trouvés dans l'arbre
+        """
         words = set()
 
         if self.cle == '':
@@ -91,6 +99,16 @@ def fusion(A, B):
 
 
 def ternary_trie_article(filename, nb):
+    """
+    insérer un nombre donné de mots dans fichier donné à un arbre initialement vide,
+    les mots sont choisis uniformément
+    Args:
+        filename:  le nom du fichier contenant des lignes de mots
+        nb: le nombre de mots à insérer dans l'arbre
+
+    Returns:
+        l'arbre contenant le `nb` mots choisis uniformément
+    """
     arbre = gener_feuille()
     data = []
     with open(filename, "r") as f:
@@ -102,13 +120,12 @@ def ternary_trie_article(filename, nb):
         mot = data[index]
         arbre = insert(arbre, mot)
         data.remove(mot)
-    # print(arbre.affiche())
     return arbre
 
 
 def search(A, mot):
     """
-    Cherche le mot donné en paramètre dans l'arbre A et renvoie True si il y est
+    Chercher le mot donné dans l'arbre A et renvoie True si il y est
     présent, False sinon
     A : arbre
     mot : mot à chercher
@@ -127,26 +144,30 @@ def search(A, mot):
     return search(A.fils[1], mot[1:])
 
 
-def fusion_bug(a, b):
+def test_fusion_bug(a, b):
+    """
+    test de déterminer si l'arbre fusionné par arbre a et b est valide
+    Args:
+        a: l'arbre a à fusionner avec b
+        b: l'arbre b à fusionner avec a
+
+    Returns:
+        True si l'arbre fusionné est valid, sinon False
+    """
     a_b = fusion(a, b)
     words_a_b = a.get_mots("").union(b.get_mots(""))
-    print(words_a_b)
     for word in words_a_b:
         if not search(a_b, word):
-            print("bug: ", word)
+            print("bug:", word)
             return False
     return True
 
 
-arbre1 = ternary_trie_article("Shakespeare/1henryiv.txt", 3)
-print("arbre1:", arbre1.affiche())
-print("arbre1 mots:", arbre1.get_mots(""))
-
-arbre2 = ternary_trie_article("Shakespeare/1henryvi.txt", 3)
-print("arbre2:", arbre2.affiche())
-print("arbre2 mots:", arbre2.get_mots(""))
-
-fusion_arbre = fusion(arbre1, arbre2)
-print("fusion arbre", fusion_arbre.affiche())
-print("fusion arbre mots:", fusion_arbre.get_mots(""))
-print("fusion de 2 arbres n'a pas de bug?", fusion_bug(arbre1, arbre2))
+if __name__ == '__main__':
+    arbre1 = ternary_trie_article("Shakespeare/1henryiv.txt", 10)
+    arbre2 = ternary_trie_article("Shakespeare/1henryvi.txt", 10)
+    fusion_arbre = fusion(arbre1, arbre2)
+    if test_fusion_bug(arbre1, arbre2):
+        print("The function fusion doesn't have bug")
+    else:
+        print("The function fusion has bug")
