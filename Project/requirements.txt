@@ -1,1 +1,1 @@
-pydot==1.4.2
+hypothesis==6.36.0

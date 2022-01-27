@@ -1,7 +1,6 @@
 import random
-import itertools
 from collections import defaultdict
-import pydot
+# import pydot
 
 
 class Node:
@@ -13,10 +12,12 @@ class Node:
         self.num = num
 
     def __str__(self):
-        return "num : " + str(self.num) + " parent: " + str(self.parent) + " left_child : " + str(self.left_child) + " right_child : " + str(self.right_child)
+        return "num : " + str(self.num) + " parent: " + str(self.parent) + " left_child : " + str(
+            self.left_child) + " right_child : " + str(self.right_child)
 
     def __repr__(self):
-        return "num : " + str(self.num) + " parent: " + str(self.parent) + " left_child : " + str(self.left_child) + " right_child : " + str(self.right_child)
+        return "num : " + str(self.num) + " parent: " + str(self.parent) + " left_child : " + str(
+            self.left_child) + " right_child : " + str(self.right_child)
 
     def __eq__(self, other):
         if not isinstance(other, Node):
@@ -110,6 +111,7 @@ class RemyTree:
         else:
             return "(" + self.compress_aux(self.tree[i].left_child) + ")" + self.compress_aux(self.tree[i].right_child)
 
+    '''
     def load_graph(self, graph, index=0, name=None):
         """
         load graph for display the tree
@@ -140,6 +142,7 @@ class RemyTree:
             edge = pydot.Edge(node, node_right)
             graph.add_edge(edge)
             self.load_graph(graph, tree.right_child, name)
+    '''
 
 
 def gen_combs(n):
@@ -181,6 +184,7 @@ def test_small_coverings():
     return all([test_covering(i) for i in range(9)])
 
 
+"""
 def test_load_graph():
     n = 6
     t = RemyTree(n)
@@ -189,6 +193,7 @@ def test_load_graph():
     t.load_graph(graph)
     name = "remy_tree_" + str(n) + ".png"
     graph.write_png(name)
+"""
 
 
 if __name__ == '__main__':

@@ -158,14 +158,14 @@ def test_fusion_bug(a, b):
     words_a_b = a.get_mots("").union(b.get_mots(""))
     for word in words_a_b:
         if not search(a_b, word):
-            print("bug:", word)
+            # print("bug:", word)
             return False
     return True
 
 
 if __name__ == '__main__':
-    arbre1 = ternary_trie_article("Shakespeare/1henryiv.txt", 10)
-    arbre2 = ternary_trie_article("Shakespeare/1henryvi.txt", 10)
+    arbre1 = ternary_trie_article("./Shakespeare/1henryiv.txt", 10)
+    arbre2 = ternary_trie_article("./Shakespeare/1henryvi.txt", 10)
     fusion_arbre = fusion(arbre1, arbre2)
     if test_fusion_bug(arbre1, arbre2):
         print("The function fusion doesn't have bug")
