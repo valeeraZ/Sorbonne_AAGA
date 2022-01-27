@@ -128,24 +128,38 @@ class RemyTree:
         graph.add_node(node)
         if tree.left_child != -1:
             name[0] += 1
-            node_left = pydot.Node(str(name[0]), label=self.tree[tree.left_child].num, shape='circle')
+            node_left = pydot.Node(
+                str(name[0]), label=self.tree[tree.left_child].num, shape='circle')
             edge = pydot.Edge(node, node_left)
             graph.add_edge(edge)
             self.load_graph(graph, tree.left_child, name)
         if tree.right_child != -1:
             name[0] += 1
-            node_right = pydot.Node(str(name[0]), label=self.tree[tree.right_child].num, shape='circle')
+            node_right = pydot.Node(
+                str(name[0]), label=self.tree[tree.right_child].num, shape='circle')
             edge = pydot.Edge(node, node_right)
             graph.add_edge(edge)
             self.load_graph(graph, tree.right_child, name)
 
 
-def gen_perms(n):
-    return list(map(list, list(itertools.permutations(range(1, n+1)))))
+def gen_combs(n):
+    """
+    generates all possible lists of size `n`
+    where for each list `l`, `l[i]<=i forall i in len(l)`
+    """
+    combs = [[]]
+    for _ in range(n):
+        combs_tmp = []
+        for comb in combs:
+            for i in range(len(comb) + 1):
+                combs_tmp.append(comb + [i])
+        combs = combs_tmp.copy()
+
+    return combs
 
 
 def gen_all_trees(n):
-    perms = gen_perms(n)
+    perms = gen_combs(n)
     trees = []
     for perm in perms:
         t = RemyTree(n)
