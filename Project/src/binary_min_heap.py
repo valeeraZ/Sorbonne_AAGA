@@ -2,7 +2,7 @@ class BinaryHeap:
     def __init__(self):
         self.heap = [0]
 
-    def shiftUp(self, i):
+    def shift_up(self, i):
         while i // 2 > 0:
             if self.heap[i] < self.heap[i // 2]:
                 tmp = self.heap[i // 2]
@@ -11,19 +11,22 @@ class BinaryHeap:
             i = i // 2
 
     def insert(self, k):
+        """
+        insert k into the mean_heap
+        """
         self.heap.append(k)
-        self.shiftUp(len(self.heap) - 1)
+        self.shift_up(len(self.heap) - 1)
 
-    def shiftDown(self, i):
+    def shift_down(self, i):
         while (i * 2) <= len(self.heap) - 1:
-            mc = self.minChild(i)
+            mc = self.min_child(i)
             if self.heap[i] > self.heap[mc]:
                 tmp = self.heap[i]
                 self.heap[i] = self.heap[mc]
                 self.heap[mc] = tmp
             i = mc
 
-    def minChild(self, i):
+    def min_child(self, i):
         if i * 2 + 1 > len(self.heap) - 1:
             return i * 2
         else:
@@ -32,31 +35,35 @@ class BinaryHeap:
             else:
                 return i * 2 + 1
 
-    def delMin(self):
-        root = self.heap[1]
+    def del_min(self):
+        """
+        delete the minimum element of the heap &
+        returns the resulted heap
+        """
         self.heap[1] = self.heap[-1]
         self.heap.pop()
-        self.shiftDown(1)
+        self.shift_down(1)
         return self.heap[1:]
 
-    def buildHeap(self, vals):
+    def build_heap(self, vals):
         i = len(vals) // 2
         self.heap = [0] + vals[:]
         while i > 0:
-            self.shiftDown(i)
+            self.shift_down(i)
             i = i - 1
 
-    def returnHeap(self):
+    def return_heap(self):
         return self.heap[1:]
 
 
 if __name__ == "__main__":
+    """Tests"""
     bh = BinaryHeap()
-    bh.buildHeap([9, 6, 5, 2, 3])
-    print(bh.returnHeap())
+    bh.build_heap([9, 6, 5, 2, 3])
+    print(bh.return_heap())
 
-    print(bh.delMin())
-    print(bh.delMin())
-    print(bh.delMin())
-    print(bh.delMin())
-    print(bh.delMin())
+    print(bh.del_min())
+    print(bh.del_min())
+    print(bh.del_min())
+    print(bh.del_min())
+    print(bh.del_min())

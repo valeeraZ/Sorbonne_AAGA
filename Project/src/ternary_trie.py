@@ -169,6 +169,6 @@ if __name__ == '__main__':
     arbre2 = ternary_trie_article("./Shakespeare/1henryvi.txt", 10)
     fusion_arbre = fusion(arbre1, arbre2)
     if test_fusion_bug(arbre1, arbre2):
-        print("The function fusion doesn't have bug")
+        print("The fusion function doesn't have bug")
     else:
-        print("The function fusion has bug")
+        print("The fusion function has bug")

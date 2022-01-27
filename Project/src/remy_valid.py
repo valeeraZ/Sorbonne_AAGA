@@ -1,9 +1,10 @@
 import random
 import itertools
 from collections import defaultdict
-# import pydot
 from src.remy_bug import RemyTree
 import pytest
+# import pydot
+
 
 class RemyTreeValid(RemyTree):
     def __init__(self, N):
@@ -11,6 +12,9 @@ class RemyTreeValid(RemyTree):
         self.root = 0
 
     def growing_tree(self, n):
+        """
+        generates a random remy tree of size `n`
+        """
         if n == 0:
             return self
         self.tree[0].num = 0
@@ -41,6 +45,10 @@ class RemyTreeValid(RemyTree):
             self.tree[i + 1].parent = i
 
     def growing_tree_det(self, n, l):
+        """
+        generates deterministic remy tree i.e
+        use a predetermined list `l` instead of random ints
+        """
         if n == 0:
             return self
         self.tree[0].num = 0
@@ -69,20 +77,33 @@ class RemyTreeValid(RemyTree):
             self.tree[i + 1].parent = i
 
     def compress(self):
+        """
+        compress the tree using an injective function phi where
+        phi(tree(left,right)) = (phi(left)) right
+        """
         return self.compress_aux(self.root)
 
 
-def gen_perms(n):
+def gen_combs(n):
+    """
+    generates all possible lists couples (i,dir) of size `2*n`
+    where for each list `l`, `l[i]<=i forall i in len(l)`
+    and dir in [0,1]
+    """
     res = []
     for i in range(0, 2 * n - 1, 2):
-        comb_direction = list(map(list, list(itertools.product(range(i + 1), [0, 1]))))
+        comb_direction = list(
+            map(list, list(itertools.product(range(i + 1), [0, 1]))))
         res.append(comb_direction)
     perms = list(itertools.product(*res))
     return perms
 
 
 def gen_all_trees(n):
-    perms = gen_perms(n)
+    """
+    generates all possible trees of size `n`
+    """
+    perms = gen_combs(n)
     trees = []
     for perm in perms:
         t = RemyTreeValid(n)
@@ -90,8 +111,10 @@ def gen_all_trees(n):
         trees.append(t)
     return trees
 
+
 @pytest.mark.skip(reason="not for pytest")
 def test_covering(n):
+    "test a covering of size n"
     trees = gen_all_trees(n)
     trees_compressed = list(map(RemyTreeValid.compress, trees))
     count = defaultdict(int)
@@ -99,21 +122,13 @@ def test_covering(n):
         count[tc] += 1
     return all(map(lambda x: x == count[trees_compressed[0]], count.values()))
 
+
 @pytest.mark.skip(reason="not for pytest")
 def test_small_coverings():
-    return all([test_covering(i) for i in range(9)])
+    "tests for small coverings"
+    n = 7
+    return all([test_covering(i) for i in range(n)])
 
-
-"""
-def test_load_graph_2():
-    n = 6
-    t = RemyTree_2(n)
-    t.growing_tree(n)
-    graph = pydot.Dot(graph_type="digraph")
-    t.load_graph(graph, index=t.root)
-    name = "remy_tree2_" + str(n) + ".png"
-    graph.write_png(name)
-"""
 
 if __name__ == '__main__':
     if test_small_coverings():

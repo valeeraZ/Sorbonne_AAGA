@@ -1,7 +1,8 @@
 import random
 from collections import defaultdict
-# import pydot
 import pytest
+# import pydot
+
 
 class Node:
 
@@ -58,6 +59,9 @@ class RemyTree:
         self.tree[b].parent = parentA
 
     def growing_tree(self, n):
+        """
+        generates a random remy tree of size `n`
+        """
         if n == 0:
             return self
 
@@ -80,6 +84,10 @@ class RemyTree:
             self.tree[2 * i].right_child = self.tree[2 * i].left_child = -1
 
     def growing_tree_det(self, n, l):
+        """
+        generates deterministic remy tree i.e
+        use a predetermined list `l` instead of random ints
+        """
         if n == 0:
             return self
 
@@ -103,6 +111,10 @@ class RemyTree:
         return self
 
     def compress(self):
+        """
+        compress the tree using an injective function phi where
+        phi(tree(left,right)) = (phi(left)) right
+        """
         return self.compress_aux(0)
 
     def compress_aux(self, i):
@@ -162,6 +174,9 @@ def gen_combs(n):
 
 
 def gen_all_trees(n):
+    """
+    generates all possible trees of size `n`
+    """
     perms = gen_combs(n)
     trees = []
     for perm in perms:
@@ -170,8 +185,10 @@ def gen_all_trees(n):
         trees.append(t)
     return trees
 
+
 @pytest.mark.skip(reason="not for pytest")
 def test_covering(n):
+    "test a covering of size n"
     trees = gen_all_trees(n)
     trees_compressed = list(map(RemyTree.compress, trees))
     count = defaultdict(int)
@@ -179,9 +196,12 @@ def test_covering(n):
         count[tc] += 1
     return all(map(lambda x: x == count[trees_compressed[0]], count.values()))
 
+
 @pytest.mark.skip(reason="not for pytest")
 def test_small_coverings():
-    return all([test_covering(i) for i in range(10)])
+    "tests for small coverings"
+    n = 10
+    return all([test_covering(i) for i in range(n)])
 
 
 """
