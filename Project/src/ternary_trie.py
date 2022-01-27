@@ -1,4 +1,5 @@
-from rand_number import rand_int
+from src.rand_number import rand_int
+import pytest 
 
 NB = 0
 
@@ -143,7 +144,7 @@ def search(A, mot):
         return True if mot[0] == A.cle and A.val == 0 else False
     return search(A.fils[1], mot[1:])
 
-
+@pytest.mark.skip(reason="not for pytest")
 def test_fusion_bug(a, b):
     """
     test de déterminer si l'arbre fusionné par arbre a et b est valide

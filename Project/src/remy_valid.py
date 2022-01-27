@@ -3,7 +3,7 @@ import itertools
 from collections import defaultdict
 # import pydot
 from src.remy_bug import RemyTree
-
+import pytest
 
 class RemyTreeValid(RemyTree):
     def __init__(self, N):
@@ -90,7 +90,7 @@ def gen_all_trees(n):
         trees.append(t)
     return trees
 
-
+@pytest.mark.skip(reason="not for pytest")
 def test_covering(n):
     trees = gen_all_trees(n)
     trees_compressed = list(map(RemyTreeValid.compress, trees))
@@ -99,9 +99,9 @@ def test_covering(n):
         count[tc] += 1
     return all(map(lambda x: x == count[trees_compressed[0]], count.values()))
 
-
+@pytest.mark.skip(reason="not for pytest")
 def test_small_coverings():
-    return all([test_covering(i) for i in range(7)])
+    return all([test_covering(i) for i in range(9)])
 
 
 """
@@ -117,6 +117,6 @@ def test_load_graph_2():
 
 if __name__ == '__main__':
     if test_small_coverings():
-        print("the coverings of remy 2 are uniform")
+        print("the coverings of remy_valid are uniform")
     else:
-        print("the coverings of remy 2 are not uniform")
+        print("the coverings of remy_valid are not uniform")

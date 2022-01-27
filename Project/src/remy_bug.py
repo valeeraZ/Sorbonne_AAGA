@@ -1,7 +1,7 @@
 import random
 from collections import defaultdict
 # import pydot
-
+import pytest
 
 class Node:
 
@@ -170,7 +170,7 @@ def gen_all_trees(n):
         trees.append(t)
     return trees
 
-
+@pytest.mark.skip(reason="not for pytest")
 def test_covering(n):
     trees = gen_all_trees(n)
     trees_compressed = list(map(RemyTree.compress, trees))
@@ -179,9 +179,9 @@ def test_covering(n):
         count[tc] += 1
     return all(map(lambda x: x == count[trees_compressed[0]], count.values()))
 
-
+@pytest.mark.skip(reason="not for pytest")
 def test_small_coverings():
-    return all([test_covering(i) for i in range(9)])
+    return all([test_covering(i) for i in range(10)])
 
 
 """

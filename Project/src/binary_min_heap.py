@@ -50,12 +50,13 @@ class BinaryHeap:
         return self.heap[1:]
 
 
-bh = BinaryHeap()
-bh.buildHeap([9, 6, 5, 2, 3])
-print(bh.returnHeap())
+if __name__ == "__main__":
+    bh = BinaryHeap()
+    bh.buildHeap([9, 6, 5, 2, 3])
+    print(bh.returnHeap())
 
-print(bh.delMin())
-print(bh.delMin())
-print(bh.delMin())
-print(bh.delMin())
-print(bh.delMin())
+    print(bh.delMin())
+    print(bh.delMin())
+    print(bh.delMin())
+    print(bh.delMin())
+    print(bh.delMin())
