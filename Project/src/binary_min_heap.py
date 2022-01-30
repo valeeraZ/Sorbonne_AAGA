@@ -40,10 +40,11 @@ class BinaryHeap:
         delete the minimum element of the heap &
         returns the resulted heap
         """
+        min_val = self.heap[1]
         self.heap[1] = self.heap[-1]
         self.heap.pop()
         self.shift_down(1)
-        return self.heap[1:]
+        return min_val, self.heap[1:]
 
     def build_heap(self, vals):
         i = len(vals) // 2

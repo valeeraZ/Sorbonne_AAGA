@@ -10,10 +10,10 @@ from src.binary_min_heap import BinaryHeap
 def test_binary_heap(vals):
     bh = BinaryHeap()
     bh.build_heap(vals)
-    vals = sorted(vals)
+    vals.sort()
     for i in range(len(vals)):
-        heap = bh.del_min()
-        assert vals[i] not in heap
+        min, _ = bh.del_min()
+        assert min == vals[i]
 
 
 class BinaryHeapMachine(RuleBasedStateMachine):
@@ -29,9 +29,10 @@ class BinaryHeapMachine(RuleBasedStateMachine):
 
     @rule(bh=BinaryHeaps.filter(lambda bh: len(bh.heap) > 2))
     def test_del_min(self, bh):
-        min_val = bh.heap[1]
-        bh_after_del_min = bh.del_min()
-        assert min_val not in bh_after_del_min
+        bh_before_del = bh.return_heap()
+        min_val, bh_after_del_min = bh.del_min()
+        assert len(bh_after_del_min) == len(bh_before_del) - 1
+        assert all(map(lambda x: min_val <= x, bh_after_del_min))
 
 
 TestBinaryHeaps = BinaryHeapMachine.TestCase
